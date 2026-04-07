@@ -2,7 +2,7 @@ import os
 from io import BytesIO
 
 from azul_runner import FV, Event, EventData, JobResult, State, test_template
-from PIL import Image
+from PIL import Image, ImageSequence
 
 from azul_plugin_image_convert.main import AzulPluginImageConvert
 
@@ -16,6 +16,7 @@ class TestExecute(test_template.TestPlugin):
 
     def getOutputImageBytes(self, result: JobResult) -> BytesIO:
         outputHash = None
+        print(result)
         for data in result.events[0].data:
             if data.label == "safe_png":
                 outputHash = data.hash
@@ -40,14 +41,14 @@ class TestExecute(test_template.TestPlugin):
                         sha256="7f2f1546ecf629ba0f71fd6c3711bf7c15a9d1f845b85512c18433ffc84eed2c",
                         data=[
                             EventData(
-                                hash="d25ab8d018f638b097df1a8d75b5cb444ca460d441c3de99f523d96fa8446edb",
+                                hash="cffa75446dd41ec6b6248842c0f8b659f79c1ff6ecbb5f4617609df2ac3b4002",
                                 label="safe_png",
                             )
                         ],
                         features={"image_convert_tool": [FV("pillow")]},
                     )
                 ],
-                data={"d25ab8d018f638b097df1a8d75b5cb444ca460d441c3de99f523d96fa8446edb": b""},
+                data={"cffa75446dd41ec6b6248842c0f8b659f79c1ff6ecbb5f4617609df2ac3b4002": b""},
             ),
         )
 
@@ -59,6 +60,7 @@ class TestExecute(test_template.TestPlugin):
         img = Image.open(self.getOutputImageBytes(result))
         self.assertLessEqual(img.height, 512)
         self.assertLessEqual(img.width, 512)
+        self.assertEqual(len(ImageSequence.all_frames(img)), 150)
 
         self.assertJobResult(
             result,
@@ -69,14 +71,14 @@ class TestExecute(test_template.TestPlugin):
                         sha256="e341549f817148ac13354e79f43f9c0350f6dd0d98d0fe0d8eb6643d8673d59b",
                         data=[
                             EventData(
-                                hash="b4bdcf6ae3c8a94f0d9339366c9fc692860cbe8b4d7ea940ddc846f2ca3cffd8",
+                                hash="04958766b54932364ce1954bf69e358ea818b388759950c19119de02993b0b2a",
                                 label="safe_png",
                             )
                         ],
-                        features={"image_convert_tool": [FV("pillow")]},
+                        features={"image_convert_tool": [FV("pillow")], "image_is_animated": [FV("true")]},
                     )
                 ],
-                data={"b4bdcf6ae3c8a94f0d9339366c9fc692860cbe8b4d7ea940ddc846f2ca3cffd8": b""},
+                data={"04958766b54932364ce1954bf69e358ea818b388759950c19119de02993b0b2a": b""},
             ),
         )
 
@@ -180,14 +182,14 @@ class TestExecute(test_template.TestPlugin):
                         sha256="52ae01875785458842477fcd2ec35c0982ef2f5da21b04a45c0e364871aa995b",
                         data=[
                             EventData(
-                                hash="562d2d3e10b7cb1cfe3ad50a09c35492e079f99aedcf05b70179838e68c3d154",
+                                hash="50d445b6f380995c089a880fedef6e584a67aeb95ee744752bba711e17677d0c",
                                 label="safe_png",
                             )
                         ],
                         features={"image_convert_tool": [FV("pillow")]},
                     )
                 ],
-                data={"562d2d3e10b7cb1cfe3ad50a09c35492e079f99aedcf05b70179838e68c3d154": b""},
+                data={"50d445b6f380995c089a880fedef6e584a67aeb95ee744752bba711e17677d0c": b""},
             ),
         )
 
@@ -207,14 +209,14 @@ class TestExecute(test_template.TestPlugin):
                         sha256="188ea3c1b62f0d4326cc7ed6fedb15aaea06a92dc41c9e3a97c321580664694d",
                         data=[
                             EventData(
-                                hash="f21d9ae31382e3d9ff82f745008363cc97100c2f32b91213f46bf600b80ced34",
+                                hash="1d2573483b4c6900c6c140cb7e0a18e9895bcef128d76fb4731b67151f405830",
                                 label="safe_png",
                             )
                         ],
                         features={"image_convert_tool": [FV("pillow")]},
                     )
                 ],
-                data={"f21d9ae31382e3d9ff82f745008363cc97100c2f32b91213f46bf600b80ced34": b""},
+                data={"1d2573483b4c6900c6c140cb7e0a18e9895bcef128d76fb4731b67151f405830": b""},
             ),
         )
 
@@ -234,14 +236,14 @@ class TestExecute(test_template.TestPlugin):
                         sha256="6aeaf5a29af029e018d79b33a37dc53475afc80e9f6458dd07a9dcb624268245",
                         data=[
                             EventData(
-                                hash="2cdbae4aaa63d80f9adbd62a95c2c0f1dae4493ec7c0e027f1c7131da52347b2",
+                                hash="0270291c32080f394f2c78634da2d4ec16af2e0e85db86a4787599c0f36a2f47",
                                 label="safe_png",
                             )
                         ],
                         features={"image_convert_tool": [FV("pillow")]},
                     )
                 ],
-                data={"2cdbae4aaa63d80f9adbd62a95c2c0f1dae4493ec7c0e027f1c7131da52347b2": b""},
+                data={"0270291c32080f394f2c78634da2d4ec16af2e0e85db86a4787599c0f36a2f47": b""},
             ),
         )
 
@@ -262,14 +264,14 @@ class TestExecute(test_template.TestPlugin):
                         sha256="328cd283458670867b954e5df1112165cb562180ac9a26d8c73acd5cc99733ac",
                         data=[
                             EventData(
-                                hash="a0acd5a4daf2d7db7ba67d4b9ebdd0f682266e836c58babc92141addcb6f9fec",
+                                hash="972b324022a55fae4875c51c4923cd80b7fe4d3f8e89c3a93b560acc920761c0",
                                 label="safe_png",
                             )
                         ],
                         features={"image_convert_tool": [FV("pillow")]},
                     )
                 ],
-                data={"a0acd5a4daf2d7db7ba67d4b9ebdd0f682266e836c58babc92141addcb6f9fec": b""},
+                data={"972b324022a55fae4875c51c4923cd80b7fe4d3f8e89c3a93b560acc920761c0": b""},
             ),
         )
 
