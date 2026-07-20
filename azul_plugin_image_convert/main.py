@@ -42,12 +42,12 @@ class AzulPluginImageConvert(BinaryPlugin):
 
     def limit_width_and_height(self, original_width: int, original_height: int) -> tuple[int, int]:
         """Calculate the new height and width within the max dimension."""
-        if original_height >= original_width and original_height > self.cfg.max_dimension:
-            new_height = self.cfg.max_dimension
+        if original_height >= original_width and original_height > self.cfg.max_dimension:  # ty: ignore[unresolved-attribute] ty doesn't understand add_settings
+            new_height = self.cfg.max_dimension  # ty: ignore[unresolved-attribute] ty doesn't understand add_settings
             aspect = new_height / original_height
             new_width = original_width * aspect
-        elif original_width > original_height and original_width > self.cfg.max_dimension:
-            new_width = self.cfg.max_dimension
+        elif original_width > original_height and original_width > self.cfg.max_dimension:  # ty: ignore[unresolved-attribute] ty doesn't understand add_settings
+            new_width = self.cfg.max_dimension  # ty: ignore[unresolved-attribute] ty doesn't understand add_settings
             aspect = new_width / original_width
             new_height = original_height * aspect
         else:
@@ -61,9 +61,9 @@ class AzulPluginImageConvert(BinaryPlugin):
         with suppress(Exception):
             # read and resize the image
             image = cv2.imread(path)
-            original_width, original_height = image.shape[:2]
+            original_width, original_height = image.shape[:2]  # ty: ignore[unresolved-attribute]
             new_width, new_height = self.limit_width_and_height(original_width, original_height)
-            image = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
+            image = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_LINEAR)  # ty: ignore[no-matching-overload]
             original_width, original_height = image.shape[:2]
 
             with tempfile.NamedTemporaryFile("rb", suffix=".png") as f:
@@ -77,15 +77,15 @@ class AzulPluginImageConvert(BinaryPlugin):
         """Resize the provided image if necessary."""
         biggestDimension = 0
         resize = False
-        if img_source.width >= img_source.height and img_source.width > self.cfg.max_dimension:
+        if img_source.width >= img_source.height and img_source.width > self.cfg.max_dimension:  # ty: ignore[unresolved-attribute] ty doesn't understand add_settings
             resize = True
             biggestDimension = img_source.width
-        elif img_source.height > img_source.width and img_source.height > self.cfg.max_dimension:
+        elif img_source.height > img_source.width and img_source.height > self.cfg.max_dimension:  # ty: ignore[unresolved-attribute] ty doesn't understand add_settings
             resize = True
             biggestDimension = img_source.height
 
         if resize:
-            resizeFactor = 2 * biggestDimension // self.cfg.max_dimension
+            resizeFactor = 2 * biggestDimension // self.cfg.max_dimension  # ty: ignore[unresolved-attribute] ty doesn't understand add_settings
             try:
                 img_source = img_source.reduce(resizeFactor)
             # Catch when the imgSource's mode is invalid
@@ -164,7 +164,7 @@ class AzulPluginImageConvert(BinaryPlugin):
         # in theory all formats that pillow supports could be supported here.
         # note that pillow only does raster images - a different lib would need to be found for vector images.
         filepath = job.get_data().get_filepath()
-        if job.event.entity.file_format in self.cfg.animated_data_types:
+        if job.event.entity.file_format in self.cfg.animated_data_types:  # ty: ignore[unresolved-attribute] ty doesn't understand add_settings
             # Attempt to extract the image as an animated image
             if self.extract_safe_animation(filepath) is True:
                 self.add_feature_values("image_is_animated", "true")

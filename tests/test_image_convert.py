@@ -1,7 +1,7 @@
 import os
-from io import BytesIO
+from typing import BinaryIO
 
-from azul_runner import FV, Event, EventData, JobResult, State, test_template
+from azul_runner import DataLabel, FV, Event, EventData, JobResult, State, test_template
 from PIL import Image, ImageSequence
 
 from azul_plugin_image_convert.main import AzulPluginImageConvert
@@ -14,14 +14,14 @@ class TestExecute(test_template.TestPlugin):
     def current_directory():
         return os.path.split(os.path.realpath(__file__))[0]
 
-    def getOutputImageBytes(self, result: JobResult) -> BytesIO:
+    def getOutputImageBytes(self, result: JobResult) -> bytes | BinaryIO:
         outputHash = None
         print(result)
         for data in result.events[0].data:
-            if data.label == "safe_png":
+            if data.label == DataLabel.SAFE_PNG:
                 outputHash = data.hash
         self.assertIsNotNone(outputHash)
-        return result.data[outputHash]
+        return result.data[outputHash]  # ty: ignore[invalid-argument-type]
 
     def test_jpg_metadata(self):
         result = self.do_execution(
@@ -42,7 +42,7 @@ class TestExecute(test_template.TestPlugin):
                         data=[
                             EventData(
                                 hash="cffa75446dd41ec6b6248842c0f8b659f79c1ff6ecbb5f4617609df2ac3b4002",
-                                label="safe_png",
+                                label=DataLabel.SAFE_PNG,
                             )
                         ],
                         features={"image_convert_tool": [FV("pillow")]},
@@ -72,7 +72,7 @@ class TestExecute(test_template.TestPlugin):
                         data=[
                             EventData(
                                 hash="04958766b54932364ce1954bf69e358ea818b388759950c19119de02993b0b2a",
-                                label="safe_png",
+                                label=DataLabel.SAFE_PNG,
                             )
                         ],
                         features={"image_convert_tool": [FV("pillow")], "image_is_animated": [FV("true")]},
@@ -118,8 +118,7 @@ class TestExecute(test_template.TestPlugin):
                 ),
                 events=[
                     Event(
-                        entity_type="binary",
-                        entity_id="4233907bfcd3733ea418d3d69b269c3be0598042b5262c8f72621f3733896e28",
+                        sha256="4233907bfcd3733ea418d3d69b269c3be0598042b5262c8f72621f3733896e28",
                         features={
                             "malformed": [
                                 FV(
@@ -148,8 +147,7 @@ class TestExecute(test_template.TestPlugin):
                 ),
                 events=[
                     Event(
-                        entity_type="binary",
-                        entity_id="c08dd20adb464df6765055eaf82765524c6734b1a581ed5c65fb1f9f82ce767e",
+                        sha256="c08dd20adb464df6765055eaf82765524c6734b1a581ed5c65fb1f9f82ce767e",
                         features={
                             "malformed": [
                                 FV(
@@ -183,7 +181,7 @@ class TestExecute(test_template.TestPlugin):
                         data=[
                             EventData(
                                 hash="50d445b6f380995c089a880fedef6e584a67aeb95ee744752bba711e17677d0c",
-                                label="safe_png",
+                                label=DataLabel.SAFE_PNG,
                             )
                         ],
                         features={"image_convert_tool": [FV("pillow")]},
@@ -210,7 +208,7 @@ class TestExecute(test_template.TestPlugin):
                         data=[
                             EventData(
                                 hash="1d2573483b4c6900c6c140cb7e0a18e9895bcef128d76fb4731b67151f405830",
-                                label="safe_png",
+                                label=DataLabel.SAFE_PNG,
                             )
                         ],
                         features={"image_convert_tool": [FV("pillow")]},
@@ -237,7 +235,7 @@ class TestExecute(test_template.TestPlugin):
                         data=[
                             EventData(
                                 hash="0270291c32080f394f2c78634da2d4ec16af2e0e85db86a4787599c0f36a2f47",
-                                label="safe_png",
+                                label=DataLabel.SAFE_PNG,
                             )
                         ],
                         features={"image_convert_tool": [FV("pillow")]},
@@ -265,7 +263,7 @@ class TestExecute(test_template.TestPlugin):
                         data=[
                             EventData(
                                 hash="972b324022a55fae4875c51c4923cd80b7fe4d3f8e89c3a93b560acc920761c0",
-                                label="safe_png",
+                                label=DataLabel.SAFE_PNG,
                             )
                         ],
                         features={"image_convert_tool": [FV("pillow")]},
@@ -293,7 +291,7 @@ class TestExecute(test_template.TestPlugin):
                         data=[
                             EventData(
                                 hash="d9c42b9e2d43cda09b98d9abc79f58055fdab562084c6846d62688d2d5966f37",
-                                label="safe_png",
+                                label=DataLabel.SAFE_PNG,
                             )
                         ],
                         features={
