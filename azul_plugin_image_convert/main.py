@@ -61,7 +61,7 @@ class AzulPluginImageConvert(BinaryPlugin):
         with suppress(Exception):
             # read and resize the image
             image = cv2.imread(path)
-            original_width, original_height = image.shape[:2]  # ty: ignore[missing-attribute]
+            original_width, original_height = image.shape[:2]  # ty: ignore[missing-union-attribute]
             new_width, new_height = self.limit_width_and_height(original_width, original_height)
             image = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_LINEAR)  # ty: ignore[no-matching-overload]
             original_width, original_height = image.shape[:2]
